@@ -1,0 +1,26 @@
+@charset "UTF-8";
+body {
+    background: #f5f5ff;
+}
+
+.navbar-custom {
+    background: linear-gradient(90deg, #5b2cff, #2196f3);
+}
+
+.sidebar {
+    min-height: 100vh;
+    background: #241B4D;
+    color: #fff;
+}
+
+.sidebar a {
+    color: #c9c9ff;
+    text-decoration: none;
+    display: block;
+    padding: 8px 12px;
+}
+
+.sidebar a:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
