@@ -1,14 +1,11 @@
 package vn.iotstar.service;
 
-import java.util.List;
-
 import vn.iotstar.entity.UserEntity;
-import vn.iotstar.repository.impl.UserRepository;
+import java.util.List;
 
 public interface UserService {
     List<UserEntity> findAll();
-    UserEntity findById(String username);
+    UserEntity findById(Integer id);
     UserEntity save(UserEntity user);
-    void delete(String username);
+    void deleteById(Integer id);
 }
-

@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
-</body>
-</html>
+<h2>Edit Category</h2>
+
+<form action="/admin/categories/edit/${cate.id}" method="post">
+
+    Name: <br>
+    <input type="text" name="name" value="${cate.name}" required><br><br>
+
+    Image URL: <br>
+    <input type="text" name="images" value="${cate.images}"><br><br>
+
+    <button type="submit">Update</button>
+</form>

@@ -1,19 +1,19 @@
 package vn.iotstar.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import vn.iotstar.entity.CategoryEntity;
-import vn.iotstar.repository.ICategoryRepository;
+import vn.iotstar.repository.CategoryRepository;
 import vn.iotstar.service.CategoryService;
+
+
+import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    private CategoryRepository repo;
+    CategoryRepository repo;
 
     @Override
     public List<CategoryEntity> findAll() {
@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void deleteById(Integer id) {
         repo.deleteById(id);
     }
 }

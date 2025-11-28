@@ -1,39 +1,55 @@
 package vn.iotstar.controller.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import vn.iotstar.entity.UserEntity;
+import vn.iotstar.service.UserService;
+
 @Controller
 @RequestMapping("/admin/users")
 public class UserController {
 
     @Autowired
-    private UserService service;
+    UserService userService;
 
     @GetMapping("/list")
     public String list(Model model) {
-        model.addAttribute("items", service.findAll());
+        model.addAttribute("items", userService.findAll());
         return "admin/user/list";
     }
 
     @GetMapping("/add")
-    public String add(Model model) {
-        model.addAttribute("item", new UserEntity());
+    public String addForm(Model model) {
+        model.addAttribute("user", new UserEntity());
         return "admin/user/add";
     }
 
-    @PostMapping("/save")
-    public String save(UserEntity user) {
-        service.save(user);
+    @PostMapping("/add")
+    public String add(@ModelAttribute("user") UserEntity user) {
+        userService.save(user);
         return "redirect:/admin/users/list";
     }
 
-    @GetMapping("/edit/{username}")
-    public String edit(@PathVariable String username, Model model) {
-        model.addAttribute("item", service.findById(username));
+    @GetMapping("/edit/{id}")
+    public String editForm(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("user", userService.findById(id));
         return "admin/user/edit";
     }
 
-    @GetMapping("/delete/{username}")
-    public String delete(@PathVariable String username) {
-        service.delete(username);
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id,
+                       @ModelAttribute("user") UserEntity user) {
+        user.setId(id);
+        userService.save(user);
+        return "redirect:/admin/users/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Integer id) {
+        userService.deleteById(id);
         return "redirect:/admin/users/list";
     }
 }

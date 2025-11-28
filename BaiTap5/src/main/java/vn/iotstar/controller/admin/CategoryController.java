@@ -1,56 +1,95 @@
 package vn.iotstar.controller.admin;
 
-import java.io.IOException;
-import java.util.List;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import vn.iotstar.entity.CategoryEntity;
 import vn.iotstar.service.CategoryService;
-import vn.iotstar.service.impl.CategoryService;
 
 @Controller
 @RequestMapping("/admin/categories")
 public class CategoryController {
 
     @Autowired
-    private CategoryService cateService;
+    private CategoryService categoryService;
 
-    @Autowired
-    private UserService userService;
-
+    // LIST
     @GetMapping("/list")
     public String list(Model model) {
-        model.addAttribute("items", cateService.findAll());
+        model.addAttribute("items", categoryService.findAll());
         return "admin/category/list";
     }
 
+    // ADD FORM
     @GetMapping("/add")
-    public String add(Model model) {
-        model.addAttribute("item", new CategoryEntity());
-        model.addAttribute("users", userService.findAll());   // chọn user tạo category
+    public String addForm(Model model) {
+        model.addAttribute("cate", new CategoryEntity());
         return "admin/category/add";
     }
 
-    @PostMapping("/save")
-    public String save(CategoryEntity cate, @RequestParam("username") String username) {
-        UserEntity user = userService.findById(username);
-        cate.setUser(user);
-        cateService.save(cate);
+    // ADD
+    @PostMapping("/add")
+    public String add(@ModelAttribute("cate") CategoryEntity cate) {
+        categoryService.save(cate);
         return "redirect:/admin/categories/list";
     }
 
+    // EDIT FORM
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("item", cateService.findById(id));
-        model.addAttribute("users", userService.findAll());
+    public String editForm(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("cate", categoryService.findById(id));
         return "admin/category/edit";
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
-        cateService.delete(id);
+    // UPDATE
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id,
+                       @ModelAttribute("cate") CategoryEntity cate) {
+        cate.setId(id);
+        categoryService.save(cate);
         return "redirect:/admin/categories/list";
     }
+
+    // DELETE
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Integer id) {
+        categoryService.deleteById(id);
+        return "redirect:/admin/categories/list";
+    }
+    @PostMapping("/add")
+    public String add(@ModelAttribute("cate") CategoryEntity cate,
+                      @RequestParam("imageFile") MultipartFile imageFile,
+                      HttpServletRequest request) {
+
+        String uploadDir = request.getServletContext().getRealPath("/uploads/category/");
+
+        String savedFile = FileUploadUtil.saveFile(uploadDir, imageFile);
+        cate.setImages(savedFile);
+
+        categoryService.save(cate);
+        return "redirect:/admin/categories/list";
+    }
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable Integer id,
+                       @ModelAttribute("cate") CategoryEntity cate,
+                       @RequestParam("imageFile") MultipartFile imageFile,
+                       HttpServletRequest request) {
+
+        CategoryEntity old = categoryService.findById(id);
+
+        String uploadDir = request.getServletContext().getRealPath("/uploads/category/");
+
+        if (!imageFile.isEmpty()) {
+            String saved = FileUploadUtil.saveFile(uploadDir, imageFile);
+            cate.setImages(saved);
+        } else {
+            cate.setImages(old.getImages());
+        }
+
+        cate.setId(id);
+        categoryService.save(cate);
+        return "redirect:/admin/categories/list";
+    }
+
 }

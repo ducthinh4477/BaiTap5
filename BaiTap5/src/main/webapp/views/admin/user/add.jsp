@@ -1,12 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<h2>Add User</h2>
+<form method="post">
 
-</body>
-</html>
+Username:<br>
+<input name="username"><br><br>
+
+Password:<br>
+<input name="password"><br><br>
+
+Full name:<br>
+<input name="fullname"><br><br>
+
+Email:<br>
+<input name="email"><br><br>
+
+<button type="submit">Save</button>
+</form>

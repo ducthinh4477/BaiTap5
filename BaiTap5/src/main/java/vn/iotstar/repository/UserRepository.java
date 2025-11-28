@@ -1,35 +1,8 @@
-package vn.iotstar.service.impl;
+package vn.iotstar.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import vn.iotstar.bt5.entity.UserEntity;
 
-import vn.iotstar.entity.UserEntity;
-import vn.iotstar.repository.IUserPepository;
-import vn.iotstar.repository.impl.UserRepository;
-import vn.iotstar.service.UserService;
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-@Service
-public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private UserRepository repo;
-
-    @Override
-    public List<UserEntity> findAll() {
-        return repo.findAll();
-    }
-
-    @Override
-    public UserEntity findById(String username) {
-        return repo.findById(username).orElse(null);
-    }
-
-    @Override
-    public UserEntity save(UserEntity user) {
-        return repo.save(user);
-    }
-
-    @Override
-    public void delete(String username) {
-        repo.deleteById(username);
-    }
 }

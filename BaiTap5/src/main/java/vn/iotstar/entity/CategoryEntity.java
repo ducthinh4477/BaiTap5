@@ -1,27 +1,17 @@
-package vn.iotstar.bt5.entity;
+package vn.iotstar.entity;
 
 import jakarta.persistence.*;
-import java.util.List;
+import lombok.*;
 
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
+@Data @AllArgsConstructor @NoArgsConstructor
 public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer categoryId;
+    private Integer id;
 
-    private String categoryName;
-    private String categoryCode;
+    private String name;
     private String images;
-    private Boolean status;
-
-    @ManyToOne
-    @JoinColumn(name = "username")
-    private UserEntity user;   // 1 user - nhiều category
-
-    @OneToMany(mappedBy = "category")
-    private List<VideoEntity> videos;
-
-    // getter, setter
 }
